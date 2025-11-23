@@ -1,7 +1,7 @@
 /**
  * EVVM Fisher/Relayer Script
  * 
- * This script demonstrates how ChainCold uses EVVM's Mate Metaprotocol to execute
+ * This script demonstrates how RealTrack uses EVVM's Mate Metaprotocol to execute
  * gasless / async shipment recordings via a Fisher/Executor flow.
  * 
  * Flow:

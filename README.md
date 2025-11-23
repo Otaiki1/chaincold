@@ -1,10 +1,10 @@
-# 🧊 ChainCold – Trustless IoT Cold-Chain Monitoring Using Filecoin, Symbiotic Relay & EVVM
+# 🧊 RealTrack – Trustless IoT Cold-Chain Monitoring Using Filecoin, Symbiotic Relay & EVVM
 
 Verifiable supply-chain telemetry with decentralized storage, stake-backed attestations, and gasless IoT transactions.
 
 ## 🚀 Overview
 
-ChainCold is a next-generation IoT telemetry system that brings trust, immutability, and verifiable integrity to global cold-chain logistics.
+RealTrack is a next-generation IoT telemetry system that brings trust, immutability, and verifiable integrity to global cold-chain logistics.
 
 We allow IoT sensors to stream temperature, humidity, and RFID data to a Gateway API, which:
 
@@ -48,7 +48,7 @@ These are **stake-secured via the Symbiotic Relay**, providing economic guarante
 
 IoT devices don't have wallets.
 
-So ChainCold uses EVVM to enable:
+So RealTrack uses EVVM to enable:
 
 -   Off-chain EIP-712 signing
 -   Async nonces for queued updates
@@ -265,8 +265,8 @@ Node.js Express server.
 ### 1. Clone repo
 
 ```bash
-git clone https://github.com/<your-org>/chaincold
-cd chaincold
+git clone https://github.com/<your-org>/realtrack
+cd realtrack
 ```
 
 ### 2. Environment variables

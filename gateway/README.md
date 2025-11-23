@@ -10,18 +10,18 @@ IoT Device → Gateway API → Batcher → Filecoin → Merkle Root → EIP-712 
 
 ## Features
 
-- **Telemetry Collection**: Receives IoT sensor data via REST API
-- **Batching**: Collects samples into batches for efficient processing
-- **Filecoin Upload**: Uploads batch data to Filecoin Calibration Testnet
-- **Merkle Root Computation**: Computes Merkle root for data integrity
-- **EIP-712 Signing**: Creates gasless signatures for EVVM submission
-- **Contract Integration**: Submits signed telemetry to ShipmentRegistryEVVM
-- **Symbiotic Relay Attestations**: Creates stake-backed attestation tasks for:
-  - Sensor data validity verification
-  - Temperature threshold compliance
-  - Merkle integrity verification
-  - Filecoin dataset verification
-  - Complete shipment integrity checks
+-   **Telemetry Collection**: Receives IoT sensor data via REST API
+-   **Batching**: Collects samples into batches for efficient processing
+-   **Filecoin Upload**: Uploads batch data to Filecoin Calibration Testnet
+-   **Merkle Root Computation**: Computes Merkle root for data integrity
+-   **EIP-712 Signing**: Creates gasless signatures for EVVM submission
+-   **Contract Integration**: Submits signed telemetry to ShipmentRegistryEVVM
+-   **Symbiotic Relay Attestations**: Creates stake-backed attestation tasks for:
+    -   Sensor data validity verification
+    -   Temperature threshold compliance
+    -   Merkle integrity verification
+    -   Filecoin dataset verification
+    -   Complete shipment integrity checks
 
 ## Installation
 
@@ -29,6 +29,18 @@ IoT Device → Gateway API → Batcher → Filecoin → Merkle Root → EIP-712 
 cd gateway
 npm install
 ```
+
+## Deployment
+
+For deployment instructions, see [DEPLOYMENT.md](./DEPLOYMENT.md).
+
+**Quick Deploy Options**:
+
+-   **Railway** (Recommended): [railway.app](https://railway.app) - Easiest, free tier available
+-   **Render**: [render.com](https://render.com) - Free tier, automatic HTTPS
+-   **Fly.io**: [fly.io](https://fly.io) - Global edge deployment
+-   **DigitalOcean**: [digitalocean.com](https://digitalocean.com) - Simple, managed
+-   **VPS**: Full control with PM2 (see DEPLOYMENT.md)
 
 ## Configuration
 
@@ -63,25 +75,28 @@ TEMP_MAX=800    # 8°C
 The gateway uses Synapse SDK for Filecoin uploads. You'll need to:
 
 1. **Install the Synapse SDK** (already in package.json):
-   ```bash
-   npm install
-   ```
+
+    ```bash
+    npm install
+    ```
 
 2. **Get Test Tokens**:
-   - **tFIL** (for gas fees): https://faucet.calibnet.chainsafe-fil.io/funds.html
-   - **USDFC** (for storage): https://forest-explorer.chainsafe.dev/faucet/calibnet_usdfc
+
+    - **tFIL** (for gas fees): https://faucet.calibnet.chainsafe-fil.io/funds.html
+    - **USDFC** (for storage): https://forest-explorer.chainsafe.dev/faucet/calibnet_usdfc
 
 3. **Configure your Filecoin wallet** in `.env`:
-   ```env
-   FILECOIN_PRIVATE_KEY=your_wallet_private_key_here
-   ```
+
+    ```env
+    FILECOIN_PRIVATE_KEY=your_wallet_private_key_here
+    ```
 
 4. **Setup Payment** (one-time, before first upload):
    The gateway will automatically handle payment setup, but you can also run it manually:
-   ```javascript
-   const { setupPayment } = require('./filecoin');
-   await setupPayment(); // Deposits 2.5 USDFC and approves Warm Storage
-   ```
+    ```javascript
+    const { setupPayment } = require("./filecoin");
+    await setupPayment(); // Deposits 2.5 USDFC and approves Warm Storage
+    ```
 
 **Note**: Minimum upload size is 127 bytes. The gateway automatically pads smaller JSON data.
 
@@ -92,24 +107,26 @@ The gateway uses Synapse SDK for Filecoin uploads. You'll need to:
 Submit IoT telemetry data.
 
 **Request:**
+
 ```json
 {
-  "shipmentId": "SHIPMENT-001",
-  "batchId": "BATCH-0001",
-  "temperature": 25.50,
-  "humidity": 70.25,
-  "rfidTag": "RFID-123",
-  "metadata": {}
+    "shipmentId": "SHIPMENT-001",
+    "batchId": "BATCH-0001",
+    "temperature": 25.5,
+    "humidity": 70.25,
+    "rfidTag": "RFID-123",
+    "metadata": {}
 }
 ```
 
 **Response:**
+
 ```json
 {
-  "success": true,
-  "message": "Telemetry received",
-  "shipmentKey": "0x...",
-  "batchSize": 5
+    "success": true,
+    "message": "Telemetry received",
+    "shipmentKey": "0x...",
+    "batchSize": 5
 }
 ```
 
@@ -118,6 +135,7 @@ Submit IoT telemetry data.
 Get shipment data from on-chain record and Filecoin.
 
 **Response:**
+
 ```json
 {
   "shipmentKey": "0x...",
@@ -147,12 +165,13 @@ Health check endpoint.
 Get attestation task result from Symbiotic Relay.
 
 **Response:**
+
 ```json
 {
-  "taskId": "0x...",
-  "timestamp": 1234567890,
-  "result": "1",
-  "completed": true
+    "taskId": "0x...",
+    "timestamp": 1234567890,
+    "result": "1",
+    "completed": true
 }
 ```
 
@@ -165,17 +184,19 @@ Get attestation information for a shipment.
 Manually trigger verification for a shipment (for testing).
 
 **Request:**
+
 ```json
 {
-  "cid": "bafy...",
-  "merkleRoot": "0x...",
-  "shipmentKey": "0x...",
-  "tempMin": -2000,
-  "tempMax": 800
+    "cid": "bafy...",
+    "merkleRoot": "0x...",
+    "shipmentKey": "0x...",
+    "tempMin": -2000,
+    "tempMax": 800
 }
 ```
 
 **Response:**
+
 ```json
 {
   "cid": "bafy...",
@@ -230,25 +251,27 @@ curl http://localhost:3001/shipment/0x...
 5. **EIP-712 Signature**: Gateway signs the data using EIP-712
 6. **Contract Submission**: Submit signed transaction to contract (can be done by EVVM/Fisher)
 7. **Symbiotic Attestations**: Create attestation tasks for Symbiotic Relay network to verify:
-   - All sensor data from batch CID is valid
-   - Temperature stayed within threshold
-   - Shipment integrity proven using Merkle tree + Filecoin CID
-   - Stored dataset verified using Filecoin Onchain Cloud
+    - All sensor data from batch CID is valid
+    - Temperature stayed within threshold
+    - Shipment integrity proven using Merkle tree + Filecoin CID
+    - Stored dataset verified using Filecoin Onchain Cloud
 
 ## Batching
 
 The gateway uses a batching system to:
-- Reduce Filecoin upload costs
-- Batch multiple samples together
-- Process when batch is full OR timeout is reached
+
+-   Reduce Filecoin upload costs
+-   Batch multiple samples together
+-   Process when batch is full OR timeout is reached
 
 Configure via:
-- `BATCH_SIZE`: Number of samples per batch (default: 10)
-- `BATCH_TIMEOUT`: Timeout in ms (default: 30000 = 30 seconds)
+
+-   `BATCH_SIZE`: Number of samples per batch (default: 10)
+-   `BATCH_TIMEOUT`: Timeout in ms (default: 30000 = 30 seconds)
 
 ## EVVM Integration
 
-ChainCold uses EVVM's Mate Metaprotocol to execute gasless / async shipment recordings via a Fisher/Executor flow.
+RealTrack uses EVVM's Mate Metaprotocol to execute gasless / async shipment recordings via a Fisher/Executor flow.
 
 ### How It Works
 
@@ -287,11 +310,11 @@ node gateway/evvm-relayer.js
 
 ### EVVM Contracts & Services
 
-- **EVVM ID**: 2 (Mate Metaprotocol)
-- **Network**: Sepolia
-- **Mate Staking**: Stake-backed execution
-- **Mate NameService**: Message storage/retrieval
-- **Contract**: `ShipmentRegistryEVVM` (deployed on Arbitrum Sepolia or Sepolia)
+-   **EVVM ID**: 2 (Mate Metaprotocol)
+-   **Network**: Sepolia
+-   **Mate Staking**: Stake-backed execution
+-   **Mate NameService**: Message storage/retrieval
+-   **Contract**: `ShipmentRegistryEVVM` (deployed on Arbitrum Sepolia or Sepolia)
 
 ### Example Transaction
 
@@ -309,20 +332,20 @@ When a Fisher processes a message, you'll see:
 
 ### Benefits
 
-- **Gasless for Gateway**: Gateway doesn't need ETH/gas tokens
-- **Queue-able**: Messages can be queued and processed asynchronously
-- **Replay Protection**: Async nonces ensure each message is processed exactly once
-- **Decentralized**: Any Fisher can process messages, creating a competitive relayer market
+-   **Gasless for Gateway**: Gateway doesn't need ETH/gas tokens
+-   **Queue-able**: Messages can be queued and processed asynchronously
+-   **Replay Protection**: Async nonces ensure each message is processed exactly once
+-   **Decentralized**: Any Fisher can process messages, creating a competitive relayer market
 
 ## Symbiotic Relay Integration
 
 The gateway automatically creates Symbiotic Relay attestation tasks after each batch is processed and submitted to the contract. These attestations provide stake-backed verification of:
 
-- **Sensor Data Validity**: Verifies all sensor data from the batch CID is valid and matches the Merkle root
-- **Temperature Threshold**: Verifies temperature stayed within configured thresholds
-- **Merkle Integrity**: Verifies shipment integrity using Merkle tree + Filecoin CID
-- **Filecoin Verification**: Verifies stored dataset is accessible and valid on Filecoin
-- **Shipment Integrity**: Complete verification combining all checks
+-   **Sensor Data Validity**: Verifies all sensor data from the batch CID is valid and matches the Merkle root
+-   **Temperature Threshold**: Verifies temperature stayed within configured thresholds
+-   **Merkle Integrity**: Verifies shipment integrity using Merkle tree + Filecoin CID
+-   **Filecoin Verification**: Verifies stored dataset is accessible and valid on Filecoin
+-   **Shipment Integrity**: Complete verification combining all checks
 
 ### Configuration
 
@@ -333,10 +356,10 @@ Set `SYMBIOTIC_RELAY_ADDRESS` in `.env` to enable Symbiotic attestations. If not
 1. After a batch is processed and submitted to the contract, the gateway creates 5 attestation tasks
 2. Each task is submitted to the Symbiotic Relay network
 3. Validators on the network verify the attestation requirements:
-   - Fetch dataset from Filecoin using CID
-   - Verify Merkle integrity
-   - Check temperature thresholds
-   - Validate sensor data structure
+    - Fetch dataset from Filecoin using CID
+    - Verify Merkle integrity
+    - Check temperature thresholds
+    - Validate sensor data structure
 4. Once validators reach consensus, the result is posted to destination chains
 
 ### Querying Attestations
@@ -345,26 +368,26 @@ Use the `/attestation/:taskId` endpoint to check the status and result of an att
 
 ## Filecoin Onchain Cloud Integration
 
-ChainCold uses **Filecoin Onchain Cloud** via the **Synapse SDK** to store all raw sensor samples. Only the CID and Merkle root are stored on-chain, making Filecoin the primary storage layer for IoT telemetry.
+RealTrack uses **Filecoin Onchain Cloud** via the **Synapse SDK** to store all raw sensor samples. Only the CID and Merkle root are stored on-chain, making Filecoin the primary storage layer for IoT telemetry.
 
 ### Synapse SDK Usage
 
 The gateway explicitly uses `@filoz/synapse-sdk` for all Filecoin operations:
 
-- **Network**: Calibration Testnet
-- **Storage Type**: Warm Storage (via Synapse SDK)
-- **Upload Method**: `sdk.storage.upload()` - uploads data buffers to Filecoin
-- **Download Method**: `sdk.storage.download()` - retrieves data by CID
+-   **Network**: Calibration Testnet
+-   **Storage Type**: Warm Storage (via Synapse SDK)
+-   **Upload Method**: `sdk.storage.upload()` - uploads data buffers to Filecoin
+-   **Download Method**: `sdk.storage.download()` - retrieves data by CID
 
 **Code Reference** (`gateway/filecoin.js`):
 
 ```javascript
-const { Synapse, RPC_URLS } = require('@filoz/synapse-sdk');
+const { Synapse, RPC_URLS } = require("@filoz/synapse-sdk");
 
 // Initialize with Calibration Testnet
 synapse = await Synapse.create({
-  privateKey: FILECOIN_PRIVATE_KEY,
-  rpcURL: RPC_URLS.calibration.http,
+    privateKey: FILECOIN_PRIVATE_KEY,
+    rpcURL: RPC_URLS.calibration.http,
 });
 
 // Upload batch data
@@ -385,6 +408,7 @@ const bytes = await sdk.storage.download(cid);
 ### Verification
 
 The frontend includes a "Verify on Filecoin" button that:
+
 1. Fetches batch data from Filecoin using the CID
 2. Recomputes Merkle root from the batch data
 3. Compares with on-chain `merkleRoot`
@@ -393,6 +417,7 @@ The frontend includes a "Verify on Filecoin" button that:
 ### Example CID
 
 After uploading, you'll see:
+
 ```
 ✅ Uploaded to Filecoin: bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi (1234 bytes)
 ```
@@ -401,26 +426,28 @@ After uploading, you'll see:
 
 ### Benefits
 
-- **Decentralized Storage**: Data stored on Filecoin network, not centralized servers
-- **Cost-Effective**: Only CID + Merkle root on-chain (gas efficient)
-- **Verifiable**: Merkle root proves data integrity without downloading full dataset
-- **Accessible**: Data retrievable via IPFS gateways or Synapse SDK
+-   **Decentralized Storage**: Data stored on Filecoin network, not centralized servers
+-   **Cost-Effective**: Only CID + Merkle root on-chain (gas efficient)
+-   **Verifiable**: Merkle root proves data integrity without downloading full dataset
+-   **Accessible**: Data retrievable via IPFS gateways or Synapse SDK
 
 ## Troubleshooting
 
 ### "GATEWAY_PRIVATE_KEY not set"
-- Ensure `.env` file exists with `GATEWAY_PRIVATE_KEY`
+
+-   Ensure `.env` file exists with `GATEWAY_PRIVATE_KEY`
 
 ### "Gateway not authorized"
-- The gateway address must be authorized in the contract
-- Use `setGateway(gatewayAddress, true)` from admin account
+
+-   The gateway address must be authorized in the contract
+-   Use `setGateway(gatewayAddress, true)` from admin account
 
 ### Filecoin upload fails
-- Check Synapse SDK installation
-- Verify API key configuration
-- Check network connectivity
+
+-   Check Synapse SDK installation
+-   Verify API key configuration
+-   Check network connectivity
 
 ## License
 
 MIT
-

@@ -1,6 +1,6 @@
 # Symbiotic Relay Integration Guide
 
-This guide explains how the Symbiotic Relay attestation system is integrated into the ChainCold gateway.
+This guide explains how the Symbiotic Relay attestation system is integrated into the RealTrack gateway.
 
 ## Overview
 
