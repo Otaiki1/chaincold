@@ -1,6 +1,6 @@
-# Cold Chain Dashboard - Frontend
+# RealTrack - Frontend Dashboard
 
-A Next.js dashboard for tracking shipments, monitoring live telemetry, and verifying Merkle roots on-chain.
+A Vite + React dashboard for tracking shipments, monitoring live telemetry, and verifying Merkle roots on-chain.
 
 ## Features
 
@@ -27,9 +27,10 @@ A Next.js dashboard for tracking shipments, monitoring live telemetry, and verif
 
 ## Tech Stack
 
-- **Framework**: Next.js 16 (App Router)
-- **Styling**: Tailwind CSS 4
-- **Blockchain**: ethers.js v6
+- **Framework**: Vite + React 18
+- **Routing**: React Router v6
+- **Styling**: Tailwind CSS 3
+- **Blockchain**: ethers.js v6, wagmi, RainbowKit
 - **IPFS**: Public IPFS gateway (ipfs.io)
 - **Merkle**: merkletreejs + keccak256
 
@@ -68,6 +69,12 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
+**Note**: Make sure you have a WalletConnect Project ID set in `.env`:
+```env
+VITE_WALLETCONNECT_PROJECT_ID=your_project_id
+```
+Get one from [WalletConnect Cloud](https://cloud.walletconnect.com)
+
 ## Project Structure
 
 ```
@@ -94,28 +101,27 @@ frontend/
 
 ## Usage
 
+### Landing Page
+
+1. Navigate to `/` to see the landing page
+2. Click "Go to App" to access the tracking interface
+
 ### Track a Shipment
 
-1. Navigate to `/track`
-2. Enter Shipment ID (e.g., `SHIPMENT-EVVM-001`)
-3. Enter Batch ID (e.g., `BATCH-0001`)
-4. Click "Lookup Shipment"
-5. View on-chain record with all telemetry data
+1. Navigate to `/app`
+2. Enter Shipment ID (e.g., `SHIPMENT-EVVM-001`) and Batch ID (e.g., `BATCH-0001`)
+3. Click "Track"
+4. View shipment details in the modal including:
+   - On-chain summary (gateway, Merkle root, CID, temperature, humidity)
+   - Full batch data table with all samples
+   - Filecoin verification
+   - Symbiotic attestations
 
-### Monitor Live Telemetry
+### Connect Wallet
 
-1. Navigate to `/live`
-2. The page automatically listens for `TelemetryRecorded` events
-3. New events appear in real-time as they're recorded on-chain
-4. View details including temperature, humidity, CID, and more
-
-### Verify Merkle Root
-
-1. Navigate to `/verify`
-2. Enter IPFS CID (or use CID from a tracked shipment)
-3. Optionally enter on-chain Merkle root for comparison
-4. Click "Verify Merkle Root"
-5. View computed root and verification result
+- Click "Connect Wallet" in the navbar
+- Connect using RainbowKit (MetaMask, WalletConnect, etc.)
+- Ensure you're on Arbitrum Sepolia network
 
 ## Contract Integration
 
@@ -131,8 +137,10 @@ The dashboard connects to the deployed `ShipmentRegistryEVVM` contract:
 
 ```bash
 npm run build
-npm start
+npm run preview
 ```
+
+The built files will be in the `dist/` directory.
 
 ### Type Checking
 

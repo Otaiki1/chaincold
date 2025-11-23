@@ -1,7 +1,7 @@
-import { Contract, InterfaceAbi, Provider } from 'ethers';
+import { ethers } from 'ethers';
 
 // Contract ABI - minimal version for the functions we need
-export const SHIPMENT_REGISTRY_ABI = [
+const SHIPMENT_REGISTRY_ABI = [
   {
     inputs: [{ internalType: 'bytes32', name: '', type: 'bytes32' }],
     name: 'records',
@@ -32,11 +32,18 @@ export const SHIPMENT_REGISTRY_ABI = [
     name: 'TelemetryRecorded',
     type: 'event',
   },
-] as const;
+];
 
-export const SHIPMENT_REGISTRY_ADDRESS = '0x8DfD8F3b766085ea072FB4C5EE60669e25CC915C';
+export const SHIPMENT_REGISTRY_ADDRESS =
+  import.meta.env.VITE_CONTRACT_ADDRESS || '0x8DfD8F3b766085ea072FB4C5EE60669e25CC915C';
 
-export function getRegistryContract(providerOrSigner: Provider | any): Contract {
-  return new Contract(SHIPMENT_REGISTRY_ADDRESS, SHIPMENT_REGISTRY_ABI as InterfaceAbi, providerOrSigner);
+/**
+ * Get contract instance
+ */
+export function getRegistryContract(providerOrSigner: ethers.Provider | ethers.Signer) {
+  return new ethers.Contract(
+    SHIPMENT_REGISTRY_ADDRESS,
+    SHIPMENT_REGISTRY_ABI,
+    providerOrSigner
+  );
 }
-

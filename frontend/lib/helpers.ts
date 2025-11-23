@@ -3,7 +3,6 @@ import { ethers } from 'ethers';
 /**
  * Compute shipmentKey from shipmentId and batchId
  * Matches on-chain: keccak256(abi.encode(shipmentId, batchId))
- * Note: Using abi.encode to match the contract's implementation
  */
 export function computeShipmentKey(shipmentId: string, batchId: string): string {
   const encoded = ethers.AbiCoder.defaultAbiCoder().encode(
@@ -38,4 +37,3 @@ export function formatTimestamp(timestamp: bigint | number): string {
   const num = typeof timestamp === 'bigint' ? Number(timestamp) : timestamp;
   return new Date(num * 1000).toLocaleString();
 }
-

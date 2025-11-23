@@ -39,4 +39,3 @@ export function verifyMerkleProof(
   const leaf = keccak256(JSON.stringify(sample, Object.keys(sample).sort()));
   return MerkleTree.verify(proof, leaf, Buffer.from(root.slice(2), 'hex'), keccak256, { sortPairs: true });
 }
-
