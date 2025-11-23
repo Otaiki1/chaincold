@@ -11,8 +11,10 @@
   "description": "",
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.2.3",
+    "@nomiclabs/hardhat-etherscan": "^3.1.8",
     "@openzeppelin/contracts": "^5.4.0",
     "chai": "^6.2.1",
+    "dotenv": "^17.2.3",
     "ethers": "^5.8.0",
     "hardhat": "^2.27.0",
     "mocha": "^11.7.5"
