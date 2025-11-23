@@ -42,6 +42,21 @@ jest.mock('../contract', () => {
   };
 });
 
+// Mock Symbiotic
+const mockGetAttestationResult = jest.fn();
+const mockVerifyShipmentIntegrity = jest.fn();
+jest.mock('../symbiotic', () => ({
+  initSymbiotic: jest.fn(),
+  getAttestationResult: (...args) => mockGetAttestationResult(...args),
+  verifyShipmentIntegrity: (...args) => mockVerifyShipmentIntegrity(...args),
+  createShipmentAttestations: jest.fn().mockResolvedValue({
+    shipmentKey: '0x' + '1'.repeat(64),
+    cid: 'bafybeiexample123',
+    tasks: [],
+    createdAt: Date.now(),
+  }),
+}));
+
 // Set environment variables before importing
 process.env.NODE_ENV = 'test';
 process.env.GATEWAY_PRIVATE_KEY = '0x' + '1'.repeat(64);
@@ -260,6 +275,122 @@ describe('Gateway API', () => {
       expect(response.body).toHaveProperty('status', 'ok');
       expect(response.body).toHaveProperty('gateway');
       expect(response.body).toHaveProperty('contract');
+      expect(response.body).toHaveProperty('symbioticEnabled');
+    });
+  });
+
+  describe('GET /attestation/:taskId', () => {
+    beforeEach(() => {
+      mockGetAttestationResult.mockClear();
+    });
+
+    test('should return attestation result', async () => {
+      const taskId = '0x' + '1'.repeat(64);
+      mockGetAttestationResult.mockResolvedValue({
+        taskId,
+        timestamp: 1234567890,
+        result: '1',
+        completed: true,
+      });
+
+      const response = await request(app)
+        .get(`/attestation/${taskId}`)
+        .expect(200);
+
+      expect(response.body).toHaveProperty('taskId', taskId);
+      expect(response.body).toHaveProperty('completed', true);
+      expect(mockGetAttestationResult).toHaveBeenCalledWith(taskId);
+    });
+
+    test('should handle invalid taskId format', async () => {
+      const response = await request(app)
+        .get('/attestation/invalid-task-id')
+        .expect(400);
+
+      expect(response.body).toHaveProperty('error');
+      expect(response.body.error).toContain('Invalid taskId format');
+    });
+  });
+
+  describe('GET /shipment/:shipmentKey/attestations', () => {
+    test('should return attestation information', async () => {
+      const shipmentKey = '0x' + '1'.repeat(64);
+      const response = await request(app)
+        .get(`/shipment/${shipmentKey}/attestations`)
+        .expect(200);
+
+      expect(response.body).toHaveProperty('shipmentKey', shipmentKey);
+      expect(response.body).toHaveProperty('cid');
+      expect(response.body).toHaveProperty('merkleRoot');
+    });
+
+    test('should return 404 for non-existent shipment', async () => {
+      const { ethers } = require('ethers');
+      mockContractInstance.records.mockResolvedValueOnce({
+        gateway: ethers.ZeroAddress,
+        merkleRoot: '0x' + '0'.repeat(64),
+        cid: '',
+        timestamp: 0n,
+        temperature: 0n,
+        humidity: 0n,
+        rfidTag: '',
+      });
+
+      const shipmentKey = '0x' + '2'.repeat(64);
+      const response = await request(app)
+        .get(`/shipment/${shipmentKey}/attestations`)
+        .expect(404);
+
+      expect(response.body).toHaveProperty('error');
+    });
+  });
+
+  describe('POST /verify', () => {
+    beforeEach(() => {
+      mockVerifyShipmentIntegrity.mockClear();
+    });
+
+    test('should verify shipment integrity', async () => {
+      mockVerifyShipmentIntegrity.mockResolvedValue({
+        cid: 'bafy123',
+        merkleRoot: '0x' + '1'.repeat(64),
+        shipmentKey: '0x' + '2'.repeat(64),
+        checks: {
+          filecoin: { valid: true },
+          merkle: { valid: true },
+          temperature: { valid: true },
+          sensorData: { valid: true },
+        },
+        overallValid: true,
+      });
+
+      const response = await request(app)
+        .post('/verify')
+        .send({
+          cid: 'bafy123',
+          merkleRoot: '0x' + '1'.repeat(64),
+          shipmentKey: '0x' + '2'.repeat(64),
+          tempMin: -2000,
+          tempMax: 800,
+        })
+        .expect(200);
+
+      expect(response.body).toHaveProperty('overallValid', true);
+      expect(response.body).toHaveProperty('checks');
+      expect(mockVerifyShipmentIntegrity).toHaveBeenCalled();
+    });
+
+    test('should reject missing required fields', async () => {
+      const response = await request(app)
+        .post('/verify')
+        .send({
+          cid: 'bafy123',
+          // Missing merkleRoot and shipmentKey
+        })
+        .expect(400);
+
+      expect(response.body).toHaveProperty('error');
+      expect(response.body.error).toContain('Missing required fields');
     });
   });
 });
