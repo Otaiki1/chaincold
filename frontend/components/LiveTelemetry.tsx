@@ -128,90 +128,90 @@ export default function LiveTelemetry({ provider }: LiveTelemetryProps) {
   }, [provider]);
 
   return (
-    <div className="p-6 max-w-6xl mx-auto">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Live Telemetry</h2>
-        <div className="flex items-center gap-2">
+    <div className="max-w-6xl mx-auto px-6 py-16">
+      <div className="flex items-center justify-between mb-12">
+        <h1 className="text-2xl font-light text-gray-900 dark:text-white tracking-tight">Live Telemetry</h1>
+        <div className="flex items-center gap-3">
           <div
-            className={`w-3 h-3 rounded-full ${isListening ? 'bg-green-500 animate-pulse' : 'bg-gray-400'}`}
+            className={`w-2 h-2 rounded-full ${isListening ? 'bg-gray-900 dark:bg-white' : 'bg-gray-300 dark:bg-gray-700'}`}
           />
-          <span className="text-sm text-gray-600 dark:text-gray-400">
-            {isListening ? 'Listening...' : 'Disconnected'}
+          <span className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+            {isListening ? 'Listening' : 'Disconnected'}
           </span>
         </div>
       </div>
 
       {error && (
-        <div className="mb-4 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
-          <p className="text-red-800 dark:text-red-200">{error}</p>
+        <div className="mb-8 py-3 border-b border-red-200 dark:border-red-900">
+          <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
         </div>
       )}
 
       {events.length === 0 ? (
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 text-center">
-          <p className="text-gray-500 dark:text-gray-400">
+        <div className="py-16 text-center border-b border-gray-100 dark:border-gray-900">
+          <p className="text-sm text-gray-400 dark:text-gray-500">
             {isListening ? 'Waiting for telemetry events...' : 'No events yet'}
           </p>
         </div>
       ) : (
-        <div className="space-y-3">
+        <div className="space-y-1">
           {events.map((event, index) => (
             <div
               key={`${event.shipmentKey}-${event.blockNumber}-${index}`}
-              className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-shadow"
+              className="py-6 border-b border-gray-100 dark:border-gray-900 hover:bg-gray-50 dark:hover:bg-gray-900/50 transition-colors"
             >
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <div>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Shipment Key</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mb-2 uppercase tracking-wide">Shipment</p>
                   <p className="font-mono text-sm text-gray-900 dark:text-white break-all">
-                    {event.shipmentKey}
+                    {event.shipmentKey.slice(0, 20)}...
                   </p>
                 </div>
                 <div>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Gateway</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mb-2 uppercase tracking-wide">Gateway</p>
                   <p className="font-mono text-sm text-gray-900 dark:text-white break-all">
-                    {event.gateway}
+                    {event.gateway.slice(0, 20)}...
                   </p>
                 </div>
                 <div>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">CID</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mb-2 uppercase tracking-wide">CID</p>
                   <a
                     target="_blank"
                     rel="noreferrer"
                     href={`https://ipfs.io/ipfs/${event.cid}`}
-                    className="font-mono text-sm text-blue-600 dark:text-blue-400 hover:underline break-all"
+                    className="font-mono text-sm text-gray-900 dark:text-white hover:text-gray-600 dark:hover:text-gray-300 break-all transition-colors"
                   >
-                    {event.cid}
+                    {event.cid.slice(0, 20)}...
                   </a>
                 </div>
                 <div>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Temperature</p>
-                  <p className="text-sm font-semibold text-gray-900 dark:text-white">
-                    {event.temperature} °C
-                  </p>
-                </div>
-                <div>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Humidity</p>
-                  <p className="text-sm font-semibold text-gray-900 dark:text-white">
-                    {event.humidity} %
-                  </p>
-                </div>
-                <div>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Timestamp</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mb-2 uppercase tracking-wide">Timestamp</p>
                   <p className="text-sm text-gray-900 dark:text-white">
                     {formatTimestamp(event.timestamp)}
                   </p>
                 </div>
+                <div>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mb-2 uppercase tracking-wide">Temperature</p>
+                  <p className="text-sm text-gray-900 dark:text-white">
+                    {event.temperature}°C
+                  </p>
+                </div>
+                <div>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mb-2 uppercase tracking-wide">Humidity</p>
+                  <p className="text-sm text-gray-900 dark:text-white">
+                    {event.humidity}%
+                  </p>
+                </div>
                 {event.rfidTag && (
                   <div>
-                    <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">RFID Tag</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mb-2 uppercase tracking-wide">RFID</p>
                     <p className="text-sm text-gray-900 dark:text-white">{event.rfidTag}</p>
                   </div>
                 )}
                 <div>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Merkle Root</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mb-2 uppercase tracking-wide">Merkle Root</p>
                   <p className="font-mono text-xs text-gray-900 dark:text-white break-all">
-                    {event.merkleRoot}
+                    {event.merkleRoot.slice(0, 20)}...
                   </p>
                 </div>
               </div>

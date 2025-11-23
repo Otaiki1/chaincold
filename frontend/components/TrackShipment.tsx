@@ -189,32 +189,32 @@ export default function TrackShipment({ provider }: TrackShipmentProps) {
   }
 
   return (
-    <div className="p-6 max-w-4xl mx-auto">
-      <h2 className="text-3xl font-bold mb-6 text-gray-900 dark:text-white">Track a Shipment</h2>
+    <div className="max-w-4xl mx-auto px-6 py-16">
+      <h1 className="text-2xl font-light mb-12 text-gray-900 dark:text-white tracking-tight">Track Shipment</h1>
       
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+      <div className="mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-xs text-gray-500 dark:text-gray-400 mb-2 uppercase tracking-wide">
               Shipment ID
             </label>
             <input
               value={shipmentId}
               onChange={(e) => setShipmentId(e.target.value)}
-              placeholder="e.g., SHIPMENT-EVVM-001"
-              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+              placeholder="SHIPMENT-EVVM-001"
+              className="w-full px-0 py-3 border-0 border-b border-gray-200 dark:border-gray-900 focus:border-gray-900 dark:focus:border-gray-100 bg-transparent text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none transition-colors"
               onKeyPress={(e) => e.key === 'Enter' && fetchRecord()}
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-xs text-gray-500 dark:text-gray-400 mb-2 uppercase tracking-wide">
               Batch ID
             </label>
             <input
               value={batchId}
               onChange={(e) => setBatchId(e.target.value)}
-              placeholder="e.g., BATCH-0001"
-              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+              placeholder="BATCH-0001"
+              className="w-full px-0 py-3 border-0 border-b border-gray-200 dark:border-gray-900 focus:border-gray-900 dark:focus:border-gray-100 bg-transparent text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none transition-colors"
               onKeyPress={(e) => e.key === 'Enter' && fetchRecord()}
             />
           </div>
@@ -223,82 +223,86 @@ export default function TrackShipment({ provider }: TrackShipmentProps) {
         <button
           onClick={fetchRecord}
           disabled={loading || !provider}
-          className="w-full md:w-auto px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-8 py-3 bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-sm font-medium hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
         >
-          {loading ? 'Loading...' : 'Lookup Shipment'}
+          {loading ? 'Loading...' : 'Lookup'}
         </button>
 
         {error && (
-          <div className="mt-4 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
-            <p className="text-red-800 dark:text-red-200">{error}</p>
+          <div className="mt-8 py-3 border-b border-red-200 dark:border-red-900">
+            <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
           </div>
         )}
 
         {record && (
-          <div className="mt-6 space-y-6">
+          <div className="mt-16 space-y-16">
             {/* On-Chain Summary */}
-            <div className="p-6 bg-gray-50 dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700">
-              <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">On-Chain Summary</h3>
-              <div className="space-y-3">
-                <div className="flex flex-col sm:flex-row sm:items-center">
-                  <span className="font-medium text-gray-700 dark:text-gray-300 w-32">Gateway:</span>
-                  <span className="text-gray-900 dark:text-white font-mono text-sm">{record.gateway}</span>
+            <div>
+              <h2 className="text-sm font-medium text-gray-900 dark:text-white mb-8 uppercase tracking-wide">On-Chain Summary</h2>
+              <div className="space-y-6">
+                <div className="flex flex-col sm:flex-row sm:items-start py-3 border-b border-gray-100 dark:border-gray-900">
+                  <span className="text-xs text-gray-500 dark:text-gray-400 w-32 mb-1 sm:mb-0">Gateway</span>
+                  <span className="text-sm text-gray-900 dark:text-white font-mono break-all">{record.gateway}</span>
                 </div>
-                <div className="flex flex-col sm:flex-row sm:items-center">
-                  <span className="font-medium text-gray-700 dark:text-gray-300 w-32">Merkle Root:</span>
-                  <span className="text-gray-900 dark:text-white font-mono text-sm break-all">{record.merkleRoot}</span>
+                <div className="flex flex-col sm:flex-row sm:items-start py-3 border-b border-gray-100 dark:border-gray-900">
+                  <span className="text-xs text-gray-500 dark:text-gray-400 w-32 mb-1 sm:mb-0">Merkle Root</span>
+                  <span className="text-sm text-gray-900 dark:text-white font-mono break-all">{record.merkleRoot}</span>
                 </div>
-                <div className="flex flex-col sm:flex-row sm:items-center">
-                  <span className="font-medium text-gray-700 dark:text-gray-300 w-32">CID:</span>
+                <div className="flex flex-col sm:flex-row sm:items-start py-3 border-b border-gray-100 dark:border-gray-900">
+                  <span className="text-xs text-gray-500 dark:text-gray-400 w-32 mb-1 sm:mb-0">CID</span>
                   <a
                     target="_blank"
                     rel="noreferrer"
                     href={`https://ipfs.io/ipfs/${record.cid}`}
-                    className="text-blue-600 dark:text-blue-400 hover:underline font-mono text-sm break-all"
+                    className="text-sm text-gray-900 dark:text-white hover:text-gray-600 dark:hover:text-gray-300 font-mono break-all transition-colors"
                   >
                     {record.cid}
                   </a>
                 </div>
-                <div className="flex flex-col sm:flex-row sm:items-center">
-                  <span className="font-medium text-gray-700 dark:text-gray-300 w-32">Timestamp:</span>
-                  <span className="text-gray-900 dark:text-white">{record.timestamp}</span>
+                <div className="flex flex-col sm:flex-row sm:items-start py-3 border-b border-gray-100 dark:border-gray-900">
+                  <span className="text-xs text-gray-500 dark:text-gray-400 w-32 mb-1 sm:mb-0">Timestamp</span>
+                  <span className="text-sm text-gray-900 dark:text-white">{record.timestamp}</span>
                 </div>
-                <div className="flex flex-col sm:flex-row sm:items-center">
-                  <span className="font-medium text-gray-700 dark:text-gray-300 w-32">Temperature:</span>
-                  <span className="text-gray-900 dark:text-white">
+                <div className="flex flex-col sm:flex-row sm:items-start py-3 border-b border-gray-100 dark:border-gray-900">
+                  <span className="text-xs text-gray-500 dark:text-gray-400 w-32 mb-1 sm:mb-0">Temperature</span>
+                  <span className="text-sm text-gray-900 dark:text-white">
                     {record.temperature ? `${record.temperature} °C` : '—'}
                   </span>
                 </div>
-                <div className="flex flex-col sm:flex-row sm:items-center">
-                  <span className="font-medium text-gray-700 dark:text-gray-300 w-32">Humidity:</span>
-                  <span className="text-gray-900 dark:text-white">
+                <div className="flex flex-col sm:flex-row sm:items-start py-3 border-b border-gray-100 dark:border-gray-900">
+                  <span className="text-xs text-gray-500 dark:text-gray-400 w-32 mb-1 sm:mb-0">Humidity</span>
+                  <span className="text-sm text-gray-900 dark:text-white">
                     {record.humidity ? `${record.humidity} %` : '—'}
                   </span>
                 </div>
-                <div className="flex flex-col sm:flex-row sm:items-center">
-                  <span className="font-medium text-gray-700 dark:text-gray-300 w-32">RFID Tag:</span>
-                  <span className="text-gray-900 dark:text-white">{record.rfidTag || '—'}</span>
+                <div className="flex flex-col sm:flex-row sm:items-start py-3">
+                  <span className="text-xs text-gray-500 dark:text-gray-400 w-32 mb-1 sm:mb-0">RFID Tag</span>
+                  <span className="text-sm text-gray-900 dark:text-white">{record.rfidTag || '—'}</span>
                 </div>
               </div>
 
               {/* Verify on Filecoin Button */}
               {batchData && batchData.length > 0 && (
-                <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                <div className="mt-12 pt-8 border-t border-gray-100 dark:border-gray-900">
                   <button
                     onClick={verifyOnFilecoin}
                     disabled={verifying}
-                    className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="px-8 py-3 bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-sm font-medium hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
                   >
                     {verifying ? 'Verifying...' : 'Verify on Filecoin'}
                   </button>
                   {verificationResult && (
-                    <div className={`mt-3 p-3 rounded-lg ${
+                    <div className={`mt-6 py-3 border-b ${
                       verificationResult.valid
-                        ? 'bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800'
-                        : 'bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800'
+                        ? 'border-green-200 dark:border-green-900'
+                        : 'border-red-200 dark:border-red-900'
                     }`}>
-                      <p className={verificationResult.valid ? 'text-green-800 dark:text-green-200' : 'text-red-800 dark:text-red-200'}>
-                        {verificationResult.message}
+                      <p className={`text-sm ${
+                        verificationResult.valid 
+                          ? 'text-green-600 dark:text-green-400' 
+                          : 'text-red-600 dark:text-red-400'
+                      }`}>
+                        {verificationResult.message.replace('✅ ', '').replace('❌ ', '')}
                       </p>
                     </div>
                   )}
@@ -308,33 +312,33 @@ export default function TrackShipment({ provider }: TrackShipmentProps) {
 
             {/* Batch Data Table */}
             {batchData && batchData.length > 0 && (
-              <div className="p-6 bg-gray-50 dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700">
-                <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
+              <div>
+                <h2 className="text-sm font-medium text-gray-900 dark:text-white mb-8 uppercase tracking-wide">
                   Batch Data ({batchData.length} samples)
-                </h3>
+                </h2>
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead>
-                      <tr className="border-b border-gray-300 dark:border-gray-600">
-                        <th className="text-left py-2 px-3 text-gray-700 dark:text-gray-300">Time</th>
-                        <th className="text-left py-2 px-3 text-gray-700 dark:text-gray-300">Temp (°C)</th>
-                        <th className="text-left py-2 px-3 text-gray-700 dark:text-gray-300">Humidity (%)</th>
-                        <th className="text-left py-2 px-3 text-gray-700 dark:text-gray-300">RFID</th>
+                      <tr className="border-b border-gray-200 dark:border-gray-900">
+                        <th className="text-left py-4 text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide font-medium">Time</th>
+                        <th className="text-left py-4 text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide font-medium">Temp</th>
+                        <th className="text-left py-4 text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide font-medium">Humidity</th>
+                        <th className="text-left py-4 text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide font-medium">RFID</th>
                       </tr>
                     </thead>
                     <tbody>
                       {batchData.map((sample, idx) => (
-                        <tr key={idx} className="border-b border-gray-200 dark:border-gray-700">
-                          <td className="py-2 px-3 text-gray-900 dark:text-white">
+                        <tr key={idx} className="border-b border-gray-100 dark:border-gray-900">
+                          <td className="py-4 text-gray-900 dark:text-white">
                             {new Date(sample.timestamp).toLocaleString()}
                           </td>
-                          <td className="py-2 px-3 text-gray-900 dark:text-white">
-                            {(sample.temperature / 100).toFixed(2)}
+                          <td className="py-4 text-gray-900 dark:text-white">
+                            {(sample.temperature / 100).toFixed(2)}°C
                           </td>
-                          <td className="py-2 px-3 text-gray-900 dark:text-white">
-                            {(sample.humidity / 100).toFixed(2)}
+                          <td className="py-4 text-gray-900 dark:text-white">
+                            {(sample.humidity / 100).toFixed(2)}%
                           </td>
-                          <td className="py-2 px-3 text-gray-900 dark:text-white">
+                          <td className="py-4 text-gray-900 dark:text-white">
                             {sample.rfidTag || '—'}
                           </td>
                         </tr>
@@ -347,29 +351,29 @@ export default function TrackShipment({ provider }: TrackShipmentProps) {
 
             {/* Attestations Section */}
             {attestations.length > 0 && (
-              <div className="p-6 bg-gray-50 dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700">
-                <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
-                  Symbiotic Relay Attestations
-                </h3>
-                <div className="space-y-2">
+              <div>
+                <h2 className="text-sm font-medium text-gray-900 dark:text-white mb-8 uppercase tracking-wide">
+                  Attestations
+                </h2>
+                <div className="space-y-4">
                   {attestations.map((att, idx) => (
                     <div
                       key={idx}
-                      className="p-3 bg-white dark:bg-gray-800 rounded border border-gray-200 dark:border-gray-700"
+                      className="py-4 border-b border-gray-100 dark:border-gray-900"
                     >
                       <div className="flex items-center justify-between">
                         <div>
-                          <span className="font-medium text-gray-900 dark:text-white">
+                          <span className="text-sm text-gray-900 dark:text-white">
                             {att.attestationType}
                           </span>
-                          <span className="ml-2 text-xs text-gray-500 dark:text-gray-400 font-mono">
+                          <span className="ml-3 text-xs text-gray-400 dark:text-gray-500 font-mono">
                             {att.taskId.slice(0, 16)}...
                           </span>
                         </div>
-                        <span className={`px-2 py-1 rounded text-xs font-semibold ${
+                        <span className={`text-xs ${
                           att.status === 'completed'
-                            ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200'
-                            : 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-200'
+                            ? 'text-green-600 dark:text-green-400'
+                            : 'text-gray-400 dark:text-gray-500'
                         }`}>
                           {att.status}
                         </span>

@@ -1,94 +1,115 @@
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
-      <div className="container mx-auto px-4 py-16">
-        <div className="text-center mb-12">
-          <h1 className="text-5xl font-bold text-gray-900 dark:text-white mb-4">
-            Cold Chain Dashboard
+    <div className="min-h-screen bg-white dark:bg-gray-950">
+      {/* Hero Section with Cover Image */}
+      <div className="relative w-full h-[500px] md:h-[600px] overflow-hidden">
+        <div className="absolute inset-0">
+          <Image
+            src="/cover-img.png"
+            alt="ChainCold Cold Chain Monitoring"
+            fill
+            className="object-cover opacity-40 dark:opacity-20"
+            priority
+            quality={90}
+          />
+        </div>
+        <div className="relative z-10 container mx-auto px-6 h-full flex flex-col items-center justify-center text-center">
+          <h1 className="text-5xl md:text-7xl font-light text-gray-900 dark:text-white mb-6 tracking-tight">
+            ChainCold
           </h1>
-          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+          <p className="text-lg md:text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto font-light leading-relaxed">
+            Trustless IoT Cold-Chain Monitoring
+          </p>
+          <p className="text-sm md:text-base text-gray-500 dark:text-gray-500 max-w-xl mx-auto mt-4 font-light">
+            Filecoin • Symbiotic Relay • EVVM
+          </p>
+        </div>
+      </div>
+
+      <div className="container mx-auto px-6 py-24">
+        <div className="text-center mb-20">
+          <h2 className="text-2xl font-light text-gray-900 dark:text-white mb-3 tracking-tight">
+            Features
+          </h2>
+          <p className="text-sm text-gray-500 dark:text-gray-400 max-w-xl mx-auto">
             Track shipments, monitor live telemetry, and verify Merkle roots on-chain
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 max-w-5xl mx-auto mb-24">
           <Link
             href="/track"
-            className="group bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+            className="group border-b border-gray-200 dark:border-gray-900 pb-8 hover:border-gray-300 dark:hover:border-gray-800 transition-colors"
           >
-            <div className="text-4xl mb-4">📦</div>
-            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-2">
+            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">
               Track Shipment
-            </h2>
-            <p className="text-gray-600 dark:text-gray-400">
+            </h3>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-4 leading-relaxed">
               Look up a shipment by ID and view on-chain telemetry data including temperature,
               humidity, and IPFS CID
             </p>
-            <div className="mt-4 text-blue-600 dark:text-blue-400 font-medium group-hover:underline">
-              Go to Track →
-            </div>
+            <span className="text-xs text-gray-400 dark:text-gray-500 group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors">
+              View →
+            </span>
           </Link>
 
           <Link
             href="/live"
-            className="group bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+            className="group border-b border-gray-200 dark:border-gray-900 pb-8 hover:border-gray-300 dark:hover:border-gray-800 transition-colors"
           >
-            <div className="text-4xl mb-4">📡</div>
-            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-2">
+            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">
               Live Telemetry
-            </h2>
-            <p className="text-gray-600 dark:text-gray-400">
-              Real-time monitoring of telemetry events as they're recorded on-chain with push
-              notifications
+            </h3>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-4 leading-relaxed">
+              Real-time monitoring of telemetry events as they're recorded on-chain
             </p>
-            <div className="mt-4 text-blue-600 dark:text-blue-400 font-medium group-hover:underline">
-              View Live →
-            </div>
+            <span className="text-xs text-gray-400 dark:text-gray-500 group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors">
+              View →
+            </span>
           </Link>
 
           <Link
             href="/verify"
-            className="group bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+            className="group border-b border-gray-200 dark:border-gray-900 pb-8 hover:border-gray-300 dark:hover:border-gray-800 transition-colors"
           >
-            <div className="text-4xl mb-4">🔍</div>
-            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-2">
+            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">
               Merkle Verifier
-            </h2>
-            <p className="text-gray-600 dark:text-gray-400">
-              Fetch IPFS payload, recompute Merkle root, and compare with on-chain data for
-              verification
+            </h3>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-4 leading-relaxed">
+              Fetch IPFS payload, recompute Merkle root, and compare with on-chain data
             </p>
-            <div className="mt-4 text-blue-600 dark:text-blue-400 font-medium group-hover:underline">
-              Verify Now →
-            </div>
+            <span className="text-xs text-gray-400 dark:text-gray-500 group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors">
+              View →
+            </span>
           </Link>
         </div>
 
-        <div className="mt-16 max-w-3xl mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8">
-          <h3 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
+        <div className="max-w-2xl mx-auto border-t border-gray-100 dark:border-gray-900 pt-12">
+          <h3 className="text-sm font-medium text-gray-900 dark:text-white mb-8 tracking-wide uppercase">
             Contract Information
           </h3>
-          <div className="space-y-2 text-sm">
-            <div className="flex justify-between">
-              <span className="text-gray-600 dark:text-gray-400">Network:</span>
-              <span className="text-gray-900 dark:text-white font-mono">Arbitrum Sepolia</span>
+          <div className="space-y-4 text-sm">
+            <div className="flex justify-between items-center py-2 border-b border-gray-50 dark:border-gray-900">
+              <span className="text-gray-500 dark:text-gray-400">Network</span>
+              <span className="text-gray-900 dark:text-white font-mono text-xs">Arbitrum Sepolia</span>
             </div>
-            <div className="flex justify-between">
-              <span className="text-gray-600 dark:text-gray-400">Contract Address:</span>
+            <div className="flex justify-between items-start py-2 border-b border-gray-50 dark:border-gray-900">
+              <span className="text-gray-500 dark:text-gray-400">Contract</span>
               <a
                 href="https://sepolia.arbiscan.io/address/0x8DfD8F3b766085ea072FB4C5EE60669e25CC915C"
                 target="_blank"
                 rel="noreferrer"
-                className="text-blue-600 dark:text-blue-400 hover:underline font-mono break-all"
+                className="text-gray-900 dark:text-white hover:text-gray-600 dark:hover:text-gray-300 font-mono text-xs break-all text-right transition-colors"
               >
                 0x8DfD8F3b766085ea072FB4C5EE60669e25CC915C
               </a>
             </div>
-            <div className="flex justify-between">
-              <span className="text-gray-600 dark:text-gray-400">Chain ID:</span>
-              <span className="text-gray-900 dark:text-white font-mono">421614</span>
+            <div className="flex justify-between items-center py-2">
+              <span className="text-gray-500 dark:text-gray-400">Chain ID</span>
+              <span className="text-gray-900 dark:text-white font-mono text-xs">421614</span>
             </div>
           </div>
         </div>

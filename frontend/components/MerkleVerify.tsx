@@ -79,31 +79,31 @@ export default function MerkleVerify({ cid, onChainRoot, onResult }: MerkleVerif
   }
 
   return (
-    <div className="p-6 max-w-4xl mx-auto">
-      <h2 className="text-3xl font-bold mb-6 text-gray-900 dark:text-white">Merkle Root Verifier</h2>
+    <div className="max-w-4xl mx-auto px-6 py-16">
+      <h1 className="text-2xl font-light mb-12 text-gray-900 dark:text-white tracking-tight">Merkle Root Verifier</h1>
       
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
-        <div className="space-y-4 mb-6">
+      <div className="mb-12">
+        <div className="space-y-8 mb-8">
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-xs text-gray-500 dark:text-gray-400 mb-3 uppercase tracking-wide">
               IPFS CID
             </label>
             <input
               value={inputCid}
               onChange={(e) => setInputCid(e.target.value)}
-              placeholder="e.g., bafybeievvmbackupcidexample..."
-              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white font-mono text-sm"
+              placeholder="bafybeievvmbackupcidexample..."
+              className="w-full px-0 py-3 border-0 border-b border-gray-200 dark:border-gray-900 focus:border-gray-900 dark:focus:border-gray-100 bg-transparent text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none transition-colors font-mono text-sm"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              On-Chain Merkle Root (optional, for comparison)
+            <label className="block text-xs text-gray-500 dark:text-gray-400 mb-3 uppercase tracking-wide">
+              On-Chain Merkle Root (optional)
             </label>
             <input
               value={inputOnChainRoot}
               onChange={(e) => setInputOnChainRoot(e.target.value)}
               placeholder="0x..."
-              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white font-mono text-sm"
+              className="w-full px-0 py-3 border-0 border-b border-gray-200 dark:border-gray-900 focus:border-gray-900 dark:focus:border-gray-100 bg-transparent text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none transition-colors font-mono text-sm"
             />
           </div>
         </div>
@@ -111,63 +111,53 @@ export default function MerkleVerify({ cid, onChainRoot, onResult }: MerkleVerif
         <button
           onClick={() => verify()}
           disabled={isVerifying || !inputCid}
-          className="w-full md:w-auto px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-8 py-3 bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-sm font-medium hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
         >
-          {isVerifying ? 'Verifying...' : 'Verify Merkle Root'}
+          {isVerifying ? 'Verifying...' : 'Verify'}
         </button>
 
         {status && (
-          <div
-            className={`mt-6 p-4 rounded-lg border ${
-              verificationResult === true
-                ? 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800'
-                : verificationResult === false
-                ? 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800'
-                : 'bg-gray-50 dark:bg-gray-900 border-gray-200 dark:border-gray-700'
-            }`}
-          >
+          <div className={`mt-12 py-3 border-b ${
+            verificationResult === true
+              ? 'border-green-200 dark:border-green-900'
+              : verificationResult === false
+              ? 'border-red-200 dark:border-red-900'
+              : 'border-gray-100 dark:border-gray-900'
+          }`}>
             <p
-              className={
+              className={`text-sm ${
                 verificationResult === true
-                  ? 'text-green-800 dark:text-green-200'
+                  ? 'text-green-600 dark:text-green-400'
                   : verificationResult === false
-                  ? 'text-red-800 dark:text-red-200'
-                  : 'text-gray-800 dark:text-gray-200'
-              }
+                  ? 'text-red-600 dark:text-red-400'
+                  : 'text-gray-600 dark:text-gray-400'
+              }`}
             >
-              {status}
+              {status.replace('✅ ', '').replace('❌ ', '')}
             </p>
           </div>
         )}
 
         {computedRoot && (
-          <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700">
-            <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">Computed Root:</p>
+          <div className="mt-8 py-4 border-b border-gray-100 dark:border-gray-900">
+            <p className="text-xs text-gray-500 dark:text-gray-400 mb-2 uppercase tracking-wide">Computed Root</p>
             <p className="font-mono text-sm text-gray-900 dark:text-white break-all">{computedRoot}</p>
           </div>
         )}
 
         {verificationResult !== null && (
-          <div className="mt-4">
-            <div
-              className={`p-4 rounded-lg ${
+          <div className="mt-8 py-4 border-b border-gray-100 dark:border-gray-900">
+            <p
+              className={`text-sm ${
                 verificationResult
-                  ? 'bg-green-100 dark:bg-green-900/30'
-                  : 'bg-red-100 dark:bg-red-900/30'
+                  ? 'text-green-600 dark:text-green-400'
+                  : 'text-red-600 dark:text-red-400'
               }`}
             >
-              <p
-                className={`font-semibold ${
-                  verificationResult
-                    ? 'text-green-800 dark:text-green-200'
-                    : 'text-red-800 dark:text-red-200'
-                }`}
-              >
-                {verificationResult
-                  ? '✅ Root matches on-chain data'
-                  : '❌ Root does not match on-chain data'}
-              </p>
-            </div>
+              {verificationResult
+                ? 'Root matches on-chain data'
+                : 'Root does not match on-chain data'}
+            </p>
           </div>
         )}
       </div>
